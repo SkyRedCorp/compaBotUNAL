@@ -173,7 +173,7 @@ if __name__ == "__main__":
    # print(myBot)
 
 # Updater para saber las peticiones de los usuarios al bot (al mandar comandos, mensajes, botones, etc),
-    updater = Updater(token="1618914785:AAFZ9NAzNs5jb9NG6woiFCGaxKAJz7bA1Es", use_context=True)
+    updater = Updater(token="insert token here", use_context=True)
 
 # the alternative to the above is the following
 # updater = Updater(myBot.token, use_context=True)
