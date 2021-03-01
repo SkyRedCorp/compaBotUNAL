@@ -12,6 +12,9 @@ def sample_responses(input_text):
     if user_message in ("mejor lenguaje", "qué lenguaje recomiendan", "qué lenguaje aprender primero", "python"):
         return "Python, mira la documentación https://docs.python.org/3.9/index.html"
 
+    if user_message in ("github", "código del compabot"):
+        return "Hola, mira mi código en https://github.com/SkyRedCorp/compaBotUNAL"
+    
     if user_message in ("lo sacó el bot", "no completó el captcha"):
         return "XD"
 

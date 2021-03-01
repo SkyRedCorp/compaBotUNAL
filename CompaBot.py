@@ -5,7 +5,7 @@ import sys
 # logging allows to see what the bot is doing in the console
 import logging
 # Constants allow me to use the token in a safe environmente but we I could also use a enviroment variable
-import CompaConstants as keys  
+# import CompaConstants as keys  
 from telegram import Update, ReplyKeyboardMarkup, ReplyKeyboardRemove
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackContext, ConversationHandler
 import CompaResponses as R
@@ -79,32 +79,36 @@ def byeMsg(update, context):
     
 # message deletion based on word filtering control creates conflict with responses
 
-#def deleteMessage(bot, chatId, messageId, userName):
- #   try:
- #       bot.delete_message(chatId, messageId)
-  #      logger.info(f'El mensaje de {userName} se eliminó porque contenía una palabra de la lista')
-  #  except Exception as e:
-    #    print(e)
+def deleteMessage(bot, chatId, messageId, userName):
+    try:
+        bot.delete_message(chatId, messageId)
+      #  logger.info(f'El mensaje de {userName} se eliminó porque contenía una palabra de la lista')
+    except Exception as e:
+        print(e)
 
-#def control(update, context):
-  #  bot = context.bot
-   # chatId = update.message.chat_id
-   # updateMsg = getattr(update, "message", None) #be creative, use this to do this with the message
-   # messageId = updateMsg.message_id
-  #  userName = update.effective_user["first_name"]
-  #  text_control = str(update.message.text) #register in the logger the text sent by user
-  #  logger.info(f'El usuario {userName} ha enviando un nuevo mensaje al grupo {chatId}')
+def control(update, context):
+    bot = context.bot
+    chatId = update.message.chat_id
+    updateMsg = getattr(update, "message", None) #be creative, use this to do this with the message
+    messageId = updateMsg.message_id
+    userName = update.effective_user["first_name"]
+    text = update.message.text #register in the logger the text sent by user
+   # logger.info(f'El usuario {userName} ha enviando un nuevo mensaje al grupo {chatId}')
+ # for each text split para palabras compuestas como que gonorrea :v con boolean
+    badWords = ["puta", "Viva Uribe", "gonorrea"]
 
-  #  badWord = "puta"
-
-  #  if badWord in text_control:
-   #     deleteMessage(bot, chatId, messageId, userName)
-  #      bot.sendMessage(
-  #          chat_id=chatId,
-   #         text=f'El mensaje de {userName} ha sido eliminado porque contenía una palabra prohíbida'
-   #     )
+    if text in badWords:
+        deleteMessage(bot, chatId, messageId, userName)
+        bot.sendMessage(
+            chat_id=chatId,
+            text=f'El mensaje de {userName} ha sido eliminado porque contenía una palabra prohíbida'
+        )
+    else:
+        handle_message(update, context)
    #elif. can I use Elif to include something from a variable such as handle_message?
 # Preset responses messages
+# responses using else solves the issue
+
 
 def handle_message(update, context):
     text_responses = str(update.message.text).lower()
