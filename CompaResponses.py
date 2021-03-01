@@ -1,8 +1,9 @@
 from datetime import datetime
 
+
 def sample_responses(input_text):
     user_message = str(input_text).lower()
-    
+
     if user_message in ("hola", "buenas", "qué tal", "cómo van"):
         return "hola compa"
 
@@ -14,7 +15,7 @@ def sample_responses(input_text):
 
     if user_message in ("github", "código del compabot"):
         return "Hola, mira mi código en https://github.com/SkyRedCorp/compaBotUNAL"
-    
+
     if user_message in ("lo sacó el bot", "no completó el captcha"):
         return "XD"
 
@@ -29,8 +30,8 @@ def sample_responses(input_text):
 
     if user_message in ("hora", "hora?"):
         now = datetime.now()
-        date_time = now.strftime("%d/%m/%y, %H:%M:%S") 
+        date_time = now.strftime("%d/%m/%y, %H:%M:%S")
 
         return str(date_time)
 
-    #return "no entiendo"
+    # return "no entiendo"

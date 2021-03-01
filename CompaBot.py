@@ -17,11 +17,12 @@ logging.basicConfig(
 
 logger = logging.getLogger(__name__)
 
+
 # here create a enviroment variable to avoid sharing the token
-#TOKEN = os.getenv("TOKEN")
-#use pipenv shell in the console to create the file, get a Pipfile
-#to create the variable go to a new terminal a type "set TOKEN=(paste botdad token)"
-#print(TOKEN) to verify is the correct number
+# TOKEN = os.getenv("TOKEN")
+# use pipenv shell in the console to create the file, get a Pipfile
+# to create the variable go to a new terminal a type "set TOKEN=(paste botdad token)"
+# print(TOKEN) to verify is the correct number
 
 # Def is use to define the function to be executed when the commands / are send.
 # Define la función que se va a ejecutar cuando entra el comando start
@@ -30,8 +31,11 @@ def start(update, context):
     userName = update.effective_user["first_name"]
     update.message.reply_text(f"Hola {userName}, cómo va compa (UwU)")
 
+
 def cancel(update, context):
     update.message.reply_text("Vemos neas (°-°).|.")
+
+
 # the logger info is very important to keep track of what the users ask to the bot
 def getBotInfo(update, context):
     bot = context.bot
@@ -39,62 +43,67 @@ def getBotInfo(update, context):
     userName = update.effective_user["first_name"]
     logger.info(f'El Usuario {userName} ha solicitado información sobre el Bot')
     bot.sendMessage(
-        chat_id=chatId, 
+        chat_id=chatId,
         parse_mode="HTML",
         text=f'Hola soy un Bot creado para el <b>grupo de programación de MYEF Telegram</b>'
     )
-# Previous parse_mode its use to add Format to the text, such as Bold, Italic, 
+
+
+# Previous parse_mode its use to add Format to the text, such as Bold, Italic,
 
 # welcome message command
 def welcomeMsg(update, context):
     bot = context.bot
-    chatId = update.message.chat_id 
+    chatId = update.message.chat_id
     updateMsg = getattr(update, "message", None)
     for user in updateMsg.new_chat_members:
         userName = user.first_name
     # logger to get notify that a new user enter the group 
     logger.info(f'El usuario {userName} ha ingresado al grupo')
-    
+
     bot.sendMessage(
-        chat_id = chatId,
+        chat_id=chatId,
         parse_mode='HTML',
         text=f'<b>Bienvenido al grupo {userName}</b> \nCreí que no serías capaz de resolver el chaptcha :u'
     )
 
+
 # goodbye message command no esta funcionando
 def byeMsg(update, context):
     bot = context.bot
-    chatId = update.message.chat_id 
-    updateMsg = getattr(update, "message", None) #obtain message info, can be use for several things
+    chatId = update.message.chat_id
+    updateMsg = getattr(update, "message", None)  # obtain message info, can be use for several things
     for user in updateMsg.left_chat_member:
         userName = user.first_name
     # logger to get notify that a new user enter the group 
     logger.info(f'El usuario {userName} ha dejado el grupo')
-    
+
     bot.sendMessage(
-        chat_id = chatId,
+        chat_id=chatId,
         parse_mode='HTML',
         text=f'<b>Adiós {userName}</b> \nNadie te va a extrañar'
     )
-    
+
+
 # message deletion based on word filtering control creates conflict with responses
 
 def deleteMessage(bot, chatId, messageId, userName):
     try:
         bot.delete_message(chatId, messageId)
-      #  logger.info(f'El mensaje de {userName} se eliminó porque contenía una palabra de la lista')
+    #  logger.info(f'El mensaje de {userName} se eliminó porque contenía una palabra de la lista')
     except Exception as e:
         print(e)
+
 
 def control(update, context):
     bot = context.bot
     chatId = update.message.chat_id
-    updateMsg = getattr(update, "message", None) #be creative, use this to do this with the message
+    updateMsg = getattr(update, "message", None)  # be creative, use this to do this with the message
     messageId = updateMsg.message_id
     userName = update.effective_user["first_name"]
-    text = update.message.text #register in the logger the text sent by user
-   # logger.info(f'El usuario {userName} ha enviando un nuevo mensaje al grupo {chatId}')
- # for each text split para palabras compuestas como que gonorrea :v con boolean
+    text = update.message.text  # register in the logger the text sent by user
+    # logger.info(f'El usuario {userName} ha enviando un nuevo mensaje al grupo {chatId}')
+    # for each text split para palabras compuestas como que gonorrea :v con boolean
     badWords = ["puta", "Viva Uribe", "gonorrea"]
 
     if text in badWords:
@@ -105,7 +114,9 @@ def control(update, context):
         )
     else:
         handle_message(update, context)
-   #elif. can I use Elif to include something from a variable such as handle_message?
+
+
+# elif. can I use Elif to include something from a variable such as handle_message?
 # Preset responses messages
 # responses using else solves the issue
 
@@ -116,18 +127,21 @@ def handle_message(update, context):
 
     update.message.reply_text(response)
 
-def  error(update, context):
+
+def error(update, context):
     print(f"Update {update} caused error {context.error}")
+
 
 # Echo command from the echobot example on Github
 def echo(update: Update, context: CallbackContext) -> None:
     """Echo the user message."""
     update.message.reply_text(update.message.text)
 
+
 # Simple answer to noncommand text (didn't work)
-#def hola(update: Update, context: CallbackContext) -> None:
- #   """offers help."""
- #   update.message.reply_text("hola compita")
+# def hola(update: Update, context: CallbackContext) -> None:
+#   """offers help."""
+#   update.message.reply_text("hola compita")
 
 # Conversation example from github, its failing to show the Identidad Response
 
@@ -146,6 +160,7 @@ def Saludo(update: Update, context: CallbackContext) -> int:
 
     return IDENTIDAD
 
+
 def Identidad(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info("Identidad de %s: %s", user.first_name, update.message.text)
@@ -156,6 +171,7 @@ def Identidad(update: Update, context: CallbackContext) -> int:
 
     return ConversationHandler.END
 
+
 def detener(update: Update, context: CallbackContext) -> int:
     user = update.message.from_user
     logger.info("Usuario %s ha cancelado la conversación.", user.first_name)
@@ -165,20 +181,20 @@ def detener(update: Update, context: CallbackContext) -> int:
 
     return ConversationHandler.END
 
-#Bloque de ejecución principal start the bot
+
+# Bloque de ejecución principal start the bot
 if __name__ == "__main__":
+    # create a variable to obtain the bot info, requires the to previous EnvFunction
+    # myBot = telegram.Bot(token = TOKEN)
+    # print(myBot)
 
-# create a variable to obtain the bot info, requires the to previous EnvFunction
-    #myBot = telegram.Bot(token = TOKEN)
-   # print(myBot)
+    # Updater para saber las peticiones de los usuarios al bot (al mandar comandos, mensajes, botones, etc),
+    updater = Updater(token="INSERT_TOKEN_HERE", use_context=True)
 
-# Updater para saber las peticiones de los usuarios al bot (al mandar comandos, mensajes, botones, etc),
-    updater = Updater(token="1618914785:AAFZ9NAzNs5jb9NG6woiFCGaxKAJz7bA1Es", use_context=True)
+    # the alternative to the above is the following
+    # updater = Updater(myBot.token, use_context=True)
 
-# the alternative to the above is the following
-# updater = Updater(myBot.token, use_context=True)
-
-# Dispatcher se encarga de enviar las acciones cuando entra algo por el updater, # Get the dispatcher to register handlers
+    # Dispatcher se encarga de enviar las acciones cuando entra algo por el updater, # Get the dispatcher to register handlers
     dp = updater.dispatcher
 
     # add handler permite que el bot este escuchando, ciclo infinito para revisar si el usuario envia petición
@@ -192,19 +208,19 @@ if __name__ == "__main__":
     # command to give goodbye message
     dp.add_handler(MessageHandler(Filters.status_update.left_chat_member, byeMsg))
     # message deletion
-   # dp.add_handler(MessageHandler(Filters.text, control))
+    # dp.add_handler(MessageHandler(Filters.text, control))
 
-# Dispatcher for the Responses
+    # Dispatcher for the Responses
     dp.add_handler(MessageHandler(Filters.text, handle_message))
     dp.add_error_handler(error)
 
-# on noncommand i.e message - echo the message on Telegram
+    # on noncommand i.e message - echo the message on Telegram
     dp.add_handler(MessageHandler(Filters.text & ~Filters.command, echo))
 
     # answer to command /hola not working
-    #dp.add_handler(MessageHandler(Filters.text & ~Filters.command, hola))
+    # dp.add_handler(MessageHandler(Filters.text & ~Filters.command, hola))
 
- # Add conversation handler with the states Identidad
+    # Add conversation handler with the states Identidad
     conv_handler = ConversationHandler(
         entry_points=[CommandHandler('saludo', Saludo)],
         states={
@@ -214,10 +230,6 @@ if __name__ == "__main__":
     )
     dp.add_handler(conv_handler)
 
-# Start the Bot
+    # Start the Bot
     updater.start_polling()
     updater.idle()
-
-
-
-
